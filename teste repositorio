@@ -1,0 +1,55 @@
+#exercício de regressão múltipla
+
+#começamos abrindo o pacote de funções Mass
+library(MASS)
+
+#abrimos o banco de dados Cars93
+View(Cars93)
+
+#vamos criar uma hipótese e gerar um programa linear de regressao
+#vamos analisar 2 variaveis preço e maior espaço do banco de tras
+#começamos com a função PLOT
+
+plot(Cars93$MPG.highway, Cars93$Price)
+
+plot(Cars93$Rear.seat.room, Cars93$Price)
+
+#vamos relacionar as duas variaveis independentes pra ver se sao indepente
+# correlação pode ser baixa ou correlação pode ser alta pra
+#(teste da significancia e o teste da hipotese nula pra ver se a relação e diferente de zero)
+
+
+cor.test(Cars93$MPG.highway,Cars93$Rear.seat.room,method="pearson",alternative="two.sided")
+
+#Descobrimos no teste de significancia que a relação das váriaveis não é nula (0,0003503)
+#porém o nivel de correlação e baixo pois e abaixo de 0,5 no caso deu (0.36)
+
+#vamos fazer a regressao para relacionar a variavel dependente com as duas independentes
+
+regressao<-lm(Cars93$Price~Cars93$MPG.highway+Cars93$Rear.seat.room)
+
+#vamos fazer o sumario para ver o resultado
+
+summary(regressao)
+
+#Qual a percentagem da variancia do preço de venda explicado pela regressão multipla (r quadrado)
+#ou Multiple R-squared
+#0.32 ou 32% o ajustado e o que a gente usa Adjusted R-square : 0.3045
+
+#vamos fazer a Anova para saber qual a variavel que mais esta afetando o preço
+
+anova(regressao)
+
+#descobrimos que a variavel do mpg é significativa na variacao de preço pois e bem menos 0.05
+# No caso quando é maior que 0,05 e porque não tem muita variação 
+
+#vamos fazer um gráfico plot
+
+plot(regressao)
+
+par(mfrow=c(2,2))
+
+
+coef(regressao)
+
+
